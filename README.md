@@ -8,3 +8,6 @@
 # How to create nested layouts in Vaadin Flow
 
 How to deal with nested Layouts / ParentLayouts in Flow
+
+The tutorial is available at 
+[https://vaadin.com/tutorials/nested-layouts-in-flow](https://vaadin.com/tutorials/nested-layouts-in-flow)
