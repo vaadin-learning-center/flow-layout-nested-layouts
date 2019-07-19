@@ -84,11 +84,10 @@
     <rapidpm-logger-adapter.version>01.00.03-RPM</rapidpm-logger-adapter.version>
 
     <!--Vaadin-->
-    <!--Vaadin-->
     <vaadin.productionMode>true</vaadin.productionMode>
-    <vaadin.version>10.0.16</vaadin.version>
-<!--    <frontend-maven-plugin.nodeVersion>v10.16.0</frontend-maven-plugin.nodeVersion>-->
-<!--    <frontend-maven-plugin.npmVersion>6.9.0</frontend-maven-plugin.npmVersion>-->
+    <vaadin.version>14.0.0.rc5</vaadin.version>
+    <frontend-maven-plugin.nodeVersion>v10.16.0</frontend-maven-plugin.nodeVersion>
+    <frontend-maven-plugin.npmVersion>6.9.0</frontend-maven-plugin.npmVersion>
 
     <jetty.version>9.4.19.v20190610</jetty.version>
 
@@ -209,18 +208,40 @@
     <!--Vaadin -->
     <dependency>
       <groupId>com.vaadin</groupId>
+      <!-- Replace artifactId with vaadin-core to use only free components -->
       <artifactId>vaadin</artifactId>
+      <exclusions>
+        <!-- Webjars are only needed when running in Vaadin 13 compatibility mode -->
+        <exclusion>
+          <groupId>com.vaadin.webjar</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.webjars.bowergithub.insites</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.webjars.bowergithub.polymer</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.webjars.bowergithub.polymerelements</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.webjars.bowergithub.vaadin</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.webjars.bowergithub.webcomponents</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
-
-    <dependency>
-      <groupId>com.vaadin</groupId>
-      <artifactId>vaadin-lumo-theme</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.vaadin</groupId>
-      <artifactId>flow-server-production-mode</artifactId>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>com.vaadin</groupId>-->
+<!--      <artifactId>flow-server-production-mode</artifactId>-->
+<!--    </dependency>-->
 
     <dependency>
       <groupId>commons-cli</groupId>
@@ -313,11 +334,42 @@
         <executions>
           <execution>
             <goals>
-              <goal>copy-production-files</goal>
-              <goal>package-for-production</goal>
+              <goal>prepare-frontend</goal>
+              <goal>build-frontend</goal>
             </goals>
           </execution>
         </executions>
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <goals>-->
+<!--              <goal>copy-production-files</goal>-->
+<!--              <goal>package-for-production</goal>-->
+<!--            </goals>-->
+<!--          </execution>-->
+<!--        </executions>-->
+      </plugin>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>1.7.6</version>
+        <executions>
+          <execution>
+            <!-- optional: you don't really need execution ids, but it looks nice in your build log. -->
+            <id>install node and npm</id>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+            <!-- optional: default phase is "generate-resources" -->
+            <phase>generate-resources</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <nodeVersion>${frontend-maven-plugin.nodeVersion}</nodeVersion>
+          <!-- optional: with node version greater than 4.0.0 will use npm provided by node distribution -->
+          <npmVersion>${frontend-maven-plugin.npmVersion}</npmVersion>
+          <!-- optional: where to download node and npm from. Defaults to https://nodejs.org/dist/ -->
+          <!--              <downloadRoot>http://myproxy.example.org/nodejs/</downloadRoot>-->
+        </configuration>
       </plugin>
     </plugins>
   </build>
