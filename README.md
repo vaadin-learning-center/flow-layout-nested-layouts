@@ -13,3 +13,8 @@ How to deal with nested Layouts / ParentLayouts in Flow
 
 The tutorial is available at 
 [https://vaadin.com/tutorials/nested-layouts-in-flow](https://vaadin.com/tutorials/nested-layouts-in-flow)
+
+
+## Demo
+This app is deployed on a free Heroku instance under the URL
+[https://flow-layout-nested-layouts.herokuapp.com/]{https://flow-layout-nested-layouts.herokuapp.com/}
