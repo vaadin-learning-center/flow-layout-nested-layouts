@@ -80,12 +80,22 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <!--RapidPM-->
-    <rapidpm-functional-reactive.version>01.00.02-RPM</rapidpm-functional-reactive.version>
-    <rapidpm-logger-adapter.version>01.00.01-RPM</rapidpm-logger-adapter.version>
+    <rapidpm-functional-reactive.version>01.00.03-RPM</rapidpm-functional-reactive.version>
+    <rapidpm-logger-adapter.version>01.00.03-RPM</rapidpm-logger-adapter.version>
 
     <!--Vaadin-->
-    <vaadin.version>14.0.0.beta2</vaadin.version>
-    <meecrowave.version>1.2.7</meecrowave.version>
+    <!--Vaadin-->
+    <vaadin.productionMode>true</vaadin.productionMode>
+    <vaadin.version>10.0.16</vaadin.version>
+<!--    <frontend-maven-plugin.nodeVersion>v10.16.0</frontend-maven-plugin.nodeVersion>-->
+<!--    <frontend-maven-plugin.npmVersion>6.9.0</frontend-maven-plugin.npmVersion>-->
+
+    <jetty.version>9.4.19.v20190610</jetty.version>
+
+    <!-- APM with stagemonitor -->
+    <stagemonitor.version>0.88.9</stagemonitor.version>
+    <opentracing-api.version>0.31.0</opentracing-api.version>
+    <byte-buddy.version>1.8.11</byte-buddy.version>
 
   </properties>
 
@@ -167,12 +177,32 @@
       <version>${rapidpm-functional-reactive.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+
     <!--Infrastructure-->
     <dependency>
-      <groupId>org.apache.meecrowave</groupId>
-      <artifactId>meecrowave-core</artifactId>
-      <version>${meecrowave.version}</version>
-      <scope>compile</scope>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-continuation</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.websocket</groupId>
+      <artifactId>websocket-server</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.websocket</groupId>
+      <artifactId>javax-websocket-server-impl</artifactId>
+      <version>${jetty.version}</version>
     </dependency>
 
 
@@ -186,6 +216,32 @@
       <groupId>com.vaadin</groupId>
       <artifactId>vaadin-lumo-theme</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>flow-server-production-mode</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-cli</groupId>
+      <artifactId>commons-cli</artifactId>
+      <version>1.4</version>
+    </dependency>
+
+    <!--    APM Stagemonitor Start -->
+    <dependency>
+      <groupId>org.stagemonitor</groupId>
+      <artifactId>stagemonitor-web-servlet</artifactId>
+      <version>${stagemonitor.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>${byte-buddy.version}</version>
+    </dependency>
+    <!--    APM Stagemonitor End -->
+
 
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -226,24 +282,42 @@
       </plugin>
 
       <plugin>
-        <!--
-          With this plugin you can start the container..:
-          $> mvn clean install meecrowave:run
-          for debugging:
-          $> mvnDebug meecrowave:run
-        -->
-        <groupId>org.apache.meecrowave</groupId>
-        <artifactId>meecrowave-maven-plugin</artifactId>
-        <version>${meecrowave.version}</version>
-      </plugin>
-
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
+        <artifactId>maven-shade-plugin</artifactId>
         <version>3.2.1</version>
-        <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <finalName>vaadin-app</finalName>
+              <transformers>
+                <transformer
+                    implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <manifestEntries>
+                    <Main-Class>demo.NanoVaadinOnKotlinKt</Main-Class>
+                  </manifestEntries>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-maven-plugin</artifactId>
+        <version>${vaadin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>copy-production-files</goal>
+              <goal>package-for-production</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
