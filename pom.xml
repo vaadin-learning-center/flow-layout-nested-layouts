@@ -85,7 +85,7 @@
 
     <!--Vaadin-->
     <vaadin.productionMode>true</vaadin.productionMode>
-    <vaadin.version>14.0.0.rc5</vaadin.version>
+    <vaadin.version>14.0.0.rc6</vaadin.version>
     <frontend-maven-plugin.nodeVersion>v10.16.0</frontend-maven-plugin.nodeVersion>
     <frontend-maven-plugin.npmVersion>6.9.0</frontend-maven-plugin.npmVersion>
 
@@ -238,10 +238,10 @@
         </exclusion>
       </exclusions>
     </dependency>
-<!--    <dependency>-->
-<!--      <groupId>com.vaadin</groupId>-->
-<!--      <artifactId>flow-server-production-mode</artifactId>-->
-<!--    </dependency>-->
+        <dependency>
+          <groupId>com.vaadin</groupId>
+          <artifactId>flow-server-production-mode</artifactId>
+        </dependency>
 
     <dependency>
       <groupId>commons-cli</groupId>
@@ -255,7 +255,26 @@
       <artifactId>stagemonitor-web-servlet</artifactId>
       <version>${stagemonitor.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.stagemonitor</groupId>
+      <artifactId>stagemonitor-os</artifactId>
+      <version>${stagemonitor.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.stagemonitor</groupId>
+      <artifactId>stagemonitor-alerting</artifactId>
+      <version>${stagemonitor.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.stagemonitor</groupId>
+      <artifactId>stagemonitor-logging</artifactId>
+      <version>${stagemonitor.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.stagemonitor</groupId>
+      <artifactId>stagemonitor-tracing</artifactId>
+      <version>${stagemonitor.version}</version>
+    </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
@@ -336,17 +355,12 @@
             <goals>
               <goal>prepare-frontend</goal>
               <goal>build-frontend</goal>
+<!--              <goal>copy-production-files</goal>-->
+<!--              <goal>package-for-production</goal>-->
             </goals>
           </execution>
         </executions>
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <goals>-->
-<!--              <goal>copy-production-files</goal>-->
-<!--              <goal>package-for-production</goal>-->
-<!--            </goals>-->
-<!--          </execution>-->
-<!--        </executions>-->
+
       </plugin>
       <plugin>
         <groupId>com.github.eirslett</groupId>
