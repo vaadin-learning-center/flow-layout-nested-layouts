@@ -21,9 +21,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <parent>
-    <groupId>org.rapidpm</groupId>
-    <artifactId>rapidpm-vaadin-dependencies-v14</artifactId>
-    <version>04.01.06-RPM</version>
+    <groupId>com.github.vaadin-learning-center.vaadin-dependencies</groupId>
+    <artifactId>vaadin-dependencies-v14</artifactId>
+    <version>222bcc63</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -84,6 +84,13 @@
     <opentracing-api.version>0.31.0</opentracing-api.version>
     <byte-buddy.version>1.8.11</byte-buddy.version>
   </properties>
+
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
 
   <!-- Just to disable any accidental deployment to maven.central -->
   <distributionManagement>
