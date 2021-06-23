@@ -78,7 +78,7 @@
   </licenses>
 
   <properties>
-    <jetty.version>9.4.19.v20190610</jetty.version>
+    <jetty.version>9.4.41.v20210516</jetty.version>
     <!-- APM with stagemonitor -->
     <stagemonitor.version>0.88.9</stagemonitor.version>
     <opentracing-api.version>0.31.0</opentracing-api.version>
